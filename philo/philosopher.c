@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/10 07:16:33 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/10 07:26:35 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	*philo_do(void *param)
 	while (1)
 	{
 		_eat(philo);
-		if (must_eat >= 0 && must_eat == philo->ate_count)
+		if (must_eat == 0 || (must_eat > 0 && must_eat == philo->ate_count))
 		{
 			pthread_mutex_lock(&common->lock);
 			common->done++;
