@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:44:36 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/07 23:32:46 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/10 05:49:02 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ struct s_philosopher
 {
 	pthread_t				thread_id;
 	int						thread_num;
-	int						is_died;
+	int						thread_stop;
 	int						ate_count;
 	struct timeval			ate_time;
+	struct timeval			log_time;
 	struct
 	{
 		struct s_common			*common;

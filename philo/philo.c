@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/08 01:44:13 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/10 05:43:07 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ extern void	*philo_do(void *param);
 static void	simulate(struct s_simulator *simulator)
 {
 	int						i;
-	int						ret;
 	struct s_philosopher	*philo;
 
-	ret = 0;
 	pthread_mutex_lock(&simulator->common.lock);
 	{
 		i = 0;

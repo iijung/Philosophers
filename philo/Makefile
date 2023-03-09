@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/08 01:19:41 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/10 03:52:34 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,9 +65,13 @@ memcheck: $(PHILO)
 		./$(PHILO) $(args)
 
 drd: $(PHILO)
-	-valgrind --tool=drd \
+	-valgrind --tool=drd -s \
 		--trace-mutex=yes \
 		--trace-semaphore=yes \
 		--trace-fork-join=yes \
 		--exclusive-threshold=10 \
+		./$(PHILO) $(args)
+
+helgrind: $(PHILO)
+	-valgrind --tool=helgrind \
 		./$(PHILO) $(args)
