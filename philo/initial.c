@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 05:21:25 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/10 23:29:43 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/11 01:12:50 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	parse(struct s_common *common, int argc, char *argv[])
 		|| p_atoi(argv[3], &common->time_to_eat)
 		|| p_atoi(argv[4], &common->time_to_sleep))
 		return (-1);
+	common->number_of_times_each_philosopher_must_eat = -1;
 	if (argc == 6
 		&& p_atoi(argv[5], &common->number_of_times_each_philosopher_must_eat))
 		return (-1);
