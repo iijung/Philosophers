@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/02 03:44:33 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/11 01:07:25 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,10 @@
 .DEFAULT_GOAL := all
 
 CFLAGS	+= -Wall -Wextra -Werror -MMD -MP -O2
+CPPFLAGS	+= -I ./util
+LDFLAGS	+= -pthread
 
+CFLAGS	+= -O0 -g -pedantic
 ifdef DEBUG
 CFLAGS	+= -O0 -g -Weverything -pedantic
 endif
@@ -25,6 +28,11 @@ endif
 PHILO	= philo_bonus
 
 PHILO_SRCS = \
+	util/ft_calloc.c \
+	util/ft_memcpy.c \
+	util/time.c \
+	initial.c \
+	philosopher.c \
 	philo_bonus.c \
 
 PHILO_OBJS = $(PHILO_SRCS:.c=.o)
@@ -48,3 +56,23 @@ re: fclean
 	$(MAKE) all
 
 .PHONY: all clean fclean re
+
+# **************************************************************************** #
+memcheck: $(PHILO)
+	-valgrind --tool=memcheck \
+		--leak-check=full \
+		--track-origins=yes \
+		--trace-children=yes \
+		./$(PHILO) $(args)
+
+drd: $(PHILO)
+	-valgrind --tool=drd -s \
+		--trace-mutex=yes \
+		--trace-semaphore=yes \
+		--trace-fork-join=yes \
+		--exclusive-threshold=10 \
+		./$(PHILO) $(args)
+
+helgrind: $(PHILO)
+	-valgrind --tool=helgrind \
+		./$(PHILO) $(args)
