@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/10 07:26:35 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/10 23:10:08 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	*philo_do(void *param)
 	ft_memcpy(&philo->ate_time, &common->start_time, sizeof(struct timeval));
 	ft_memcpy(&philo->log_time, &common->start_time, sizeof(struct timeval));
 	pthread_mutex_unlock(&common->lock);
-	if (philo->thread_id % 2)
+	if (philo->thread_num % 2)
 		usleep(200);
 	while (1)
 	{

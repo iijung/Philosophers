@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 05:21:25 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/08 01:22:31 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/10 23:29:43 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ extern int	initial(struct s_simulator *simulator, int argc, char *argv[])
 		if (simulator->forks == NULL || simulator->philos == NULL)
 			break ;
 		if (init(simulator) < 0)
-			return (-1);
+			break ;
 		return (0);
 	}
 	finally(simulator);
