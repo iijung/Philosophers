@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/11 01:26:57 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:24:37 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,16 @@ extern sem_t	*ft_sem_open(const char *prefix, int id)
 static void	main_process(struct s_simulator *simulator)
 {
 	int	i;
+	int	pid;
 	int	status;
 
 	i = 0;
 	while (i < simulator->common.number_of_philosophers)
 	{
-		waitpid(-1, &status, 0);
+		pid = waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) == EXIT_FAILURE)
 		{
-			kill(-1, SIGINT);
+			kill(-pid, SIGINT);
 			break ;
 		}
 		++i;
@@ -81,7 +82,7 @@ static int	simulate(struct s_simulator *simulator)
 	struct s_common *const	common = &simulator->common;
 	int						i;
 
-	gettimeofday(&common->start_time, NULL);
+	sem_wait(common->lock);
 	i = 0;
 	while (i < common->number_of_philosophers)
 	{
@@ -92,6 +93,7 @@ static int	simulate(struct s_simulator *simulator)
 		}
 		++i;
 	}
+	sem_post(common->lock);
 	main_process(simulator);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/11 01:14:30 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:24:03 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ extern int	philo_do(void *param)
 	int							must_eat;
 
 	must_eat = common->number_of_times_each_philosopher_must_eat;
+	sem_wait(common->lock);
+	gettimeofday(&common->start_time, NULL);
 	ft_memcpy(&philo->ate_time, &common->start_time, sizeof(struct timeval));
 	ft_memcpy(&philo->log_time, &common->start_time, sizeof(struct timeval));
+	sem_post(common->lock);
 	if (philo->process_num % 2)
 		usleep(200);
 	while (1)
