@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:44:36 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/11 01:26:31 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:08:57 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <string.h>
 # include <sys/wait.h>
 # include <semaphore.h>

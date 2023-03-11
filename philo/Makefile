@@ -6,19 +6,19 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/10 18:55:44 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/11 18:09:42 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .DEFAULT_ON_ERROR:
 .DEFAULT_GOAL := all
 
-CFLAGS	+= -Wall -Wextra -Werror -MMD -MP -O2
+CFLAGS		+= -Wall -Wextra -Werror -MMD -MP -O2
 CPPFLAGS	+= -I ./util
-LDFLAGS	+= -pthread
+LDFLAGS		+= -pthread
 
 ifdef DEBUG
-CFLAGS	+= -O0 -g -Weverything -pedantic
+CFLAGS		+= -O0 -g -Weverything -pedantic
 endif
 
 # **************************************************************************** #
