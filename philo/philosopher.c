@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/10 23:10:08 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:46:21 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ static void	_eat(struct s_philosopher *philo)
 	{
 		_speak(philo, STATUS_EAT);
 		philo->ate_count++;
+		gettimeofday(&philo->ate_time, NULL);
 		while (timediff(&philo->log_time, NULL) < common->time_to_eat)
 			usleep(200);
-		gettimeofday(&philo->ate_time, NULL);
 		pthread_mutex_lock(&philo->forks[1]->lock);
 		philo->forks[1]->is_used = 0;
 		pthread_mutex_unlock(&philo->forks[1]->lock);
