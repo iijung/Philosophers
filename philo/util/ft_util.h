@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 11:48:10 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/26 23:18:22 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 05:50:49 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <limits.h>
 
 extern long	ft_atol(const char *str);
 extern void	ft_putstr_fd(char *s, int fd);
