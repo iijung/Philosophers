@@ -6,11 +6,13 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 01:23:23 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/24 03:09:22 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 02:25:39 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "util.h"
+#include <stddef.h>
+#include <errno.h>
+#include <limits.h>
 
 static int	ft_isspace(int c)
 {
