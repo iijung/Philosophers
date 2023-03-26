@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_locker.h                                        :+:      :+:    :+:   */
+/*   ft_shared.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 16:08:42 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/23 18:02:21 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 03:12:29 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LOCKER_H
-# define  FT_LOCKER_H
+#ifndef FT_SHARED_H
+# define  FT_SHARED_H
+# include <pthread.h>
 
-enum e_locker_action
+struct s_shared_lock
 {
-	UNLOCKED = 0,
-	LOCKED = 1
+	pthread_mutex_t	lock;
+	int				val;
 };
 
-struct s_locker
-{
-	pthread_mutex_t	key;
-	int				is_locked;
-};
-
-int	ft_lock_unlock(struct s_locker *locker, enum e_lock action);
+void	set_shared(struct s_shared *shared, int value);
+int		get_shared(struct s_shared *shared);
 
 #endif
