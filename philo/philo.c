@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 06:47:29 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:56:33 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,11 @@ static void	_finally(
 {
 	long	i;
 
-	pthread_mutex_unlock(&common->lock);
 	pthread_mutex_destroy(&common->lock);
-	pthread_mutex_unlock(&common->completed.lock);
 	pthread_mutex_destroy(&common->completed.lock);
 	i = 0;
 	while (i < common->number_of_philosophers)
-	{
-		pthread_mutex_unlock(&forks[i].lock);
-		pthread_mutex_destroy(&forks[i].lock);
-		++i;
-	}
+		pthread_mutex_destroy(&forks[i++].lock);
 }
 
 static int	_initial(
