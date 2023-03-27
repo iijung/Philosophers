@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 05:01:33 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 18:25:29 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 00:50:39 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ long	get_elapsed_ms(struct timeval base, struct timeval curr)
 
 int	compare_timeval(struct timeval base, struct timeval curr)
 {
-	base.tv_usec -= base.tv_usec % 1000;
-	curr.tv_usec -= curr.tv_usec % 1000;
 	if (base.tv_sec > curr.tv_sec)
 		return (TIME_REMAINING);
 	if (base.tv_sec < curr.tv_sec)
@@ -53,8 +51,6 @@ int	compare_timenow(struct timeval base)
 	struct timeval	curr;
 
 	gettimeofday(&curr, NULL);
-	base.tv_usec -= base.tv_usec % 1000;
-	curr.tv_usec -= curr.tv_usec % 1000;
 	if (base.tv_sec > curr.tv_sec)
 		return (TIME_REMAINING);
 	if (base.tv_sec < curr.tv_sec)
