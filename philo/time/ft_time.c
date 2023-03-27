@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 05:01:33 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 07:45:14 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 18:25:29 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 struct timeval	add_timeval_ms(struct timeval base, long timestamp_in_ms)
 {
-	struct timeval	new_time;
-
-	new_time = base;
-	new_time.tv_sec += timestamp_in_ms / 1000;
-	new_time.tv_usec += timestamp_in_ms % 1000 * 1000;
-	return (new_time);
+	base.tv_sec += timestamp_in_ms / 1000;
+	base.tv_usec += timestamp_in_ms % 1000 * 1000;
+	if (base.tv_usec >= 1000000)
+	{
+		base.tv_sec += 1;
+		base.tv_usec -= 1000000;
+	}
+	return (base);
 }
 
 long	get_elapsed_ms(struct timeval base, struct timeval curr)
@@ -33,6 +35,8 @@ long	get_elapsed_ms(struct timeval base, struct timeval curr)
 
 int	compare_timeval(struct timeval base, struct timeval curr)
 {
+	base.tv_usec -= base.tv_usec % 1000;
+	curr.tv_usec -= curr.tv_usec % 1000;
 	if (base.tv_sec > curr.tv_sec)
 		return (TIME_REMAINING);
 	if (base.tv_sec < curr.tv_sec)
@@ -49,6 +53,8 @@ int	compare_timenow(struct timeval base)
 	struct timeval	curr;
 
 	gettimeofday(&curr, NULL);
+	base.tv_usec -= base.tv_usec % 1000;
+	curr.tv_usec -= curr.tv_usec % 1000;
 	if (base.tv_sec > curr.tv_sec)
 		return (TIME_REMAINING);
 	if (base.tv_sec < curr.tv_sec)
