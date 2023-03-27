@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 04:02:19 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 23:43:20 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "ft_time.h"
 # include "ft_shared.h"
 
-# define STATUS_FORK	" has taken a fork\n"
-# define STATUS_EAT		" is eating\n"
-# define STATUS_SLEEP	" is sleeping\n"
-# define STATUS_THINK	" is thinking\n"
-# define STATUS_DIED	" died\n"
+# define STATUS_FORK	"has taken a fork\n"
+# define STATUS_EAT		"is eating\n"
+# define STATUS_SLEEP	"is sleeping\n"
+# define STATUS_THINK	"is thinking\n"
+# define STATUS_DIED	"died\n"
 
 struct s_common
 {
@@ -37,8 +37,8 @@ struct s_common
 
 struct s_philosopher
 {
-	pthread_t			thread_id;
-	long				thread_num;
+	pthread_t			tid;
+	long				num;
 	long				ate_count;
 	struct timeval		die_time;
 	struct timeval		log_time;

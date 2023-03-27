@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 18:56:33 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/27 23:26:19 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	_initial(
 		philo->common = common;
 		philo->forks[i % 2] = &forks[i];
 		philo->forks[!(i % 2)] = &forks[(i + 1) % num_of_philos];
-		philo->thread_num = ++i;
+		philo->num = ++i;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -61,29 +61,30 @@ static int	_execute(
 	struct s_common *common,
 	struct s_philosopher *philos)
 {
-	int						ret;
-	long					i;
-	struct s_philosopher	*philo;
+	long	i;
+	int		ret;
 
 	i = 0;
 	ret = EXIT_SUCCESS;
-	pthread_mutex_lock(&common->lock);
+	gettimeofday(&common->start_time, NULL);
+	while (i < common->number_of_philosophers && ret == EXIT_SUCCESS)
 	{
-		while (i < common->number_of_philosophers)
-		{
-			philo = &philos[i];
-			if (pthread_create(&philo->thread_id, NULL, philo_do, philo))
-			{
-				ret = EXIT_FAILURE;
-				break ;
-			}
-			++i;
-		}
-		gettimeofday(&common->start_time, NULL);
+		ret = pthread_create(&philos[i].tid, NULL, philo_do, &philos[i]);
+		i += 2;
 	}
-	pthread_mutex_unlock(&common->lock);
-	while (i > 0)
-		pthread_join(philos[--i].thread_id, NULL);
+	usleep(500);
+	i = 1;
+	while (i < common->number_of_philosophers && ret == EXIT_SUCCESS)
+	{
+		ret = pthread_create(&philos[i].tid, NULL, philo_do, &philos[i]);
+		i += 2;
+	}
+	i = -1;
+	while (++i < common->number_of_philosophers)
+	{
+		if (philos[i].tid)
+			pthread_join(philos[i].tid, NULL);
+	}
 	return (ret);
 }
 
