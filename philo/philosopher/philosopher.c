@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 06:38:44 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 07:19:29 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	_eat(struct s_philosopher *philo)
 	{
 		if (!_speak(philo, STATUS_FORK))
 		{
-			if (philo->forks[0] == philo->forks[1])
+			if (common->number_of_philosophers == 1)
 				ret = _wait(philo, LONG_MAX);
 			else if (!_fork(philo, philo->forks[1]))
 			{

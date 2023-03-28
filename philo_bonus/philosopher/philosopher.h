@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 00:10:30 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 07:15:53 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ struct s_common
 
 struct s_philosopher
 {
+	pid_t				pid;
 	long				num;
 	long				ate_count;
 	long				die_time;
