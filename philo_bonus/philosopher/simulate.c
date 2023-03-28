@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 07:23:21 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 07:57:10 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static int	_start(struct s_simulator *simulator)
 static int	_stop(struct s_simulator *simulator, int exit_status)
 {
 	struct s_common *const		common = simulator->common;
-	struct s_philosopher *const	philos = simulator->philos;
 	long						i;
 	int							status;
 
@@ -83,18 +82,7 @@ static int	_stop(struct s_simulator *simulator, int exit_status)
 	while (i < common->number_of_philosophers)
 	{
 		waitpid(-1, &status, 0);
-		if (WEXITSTATUS(status) == PHILO_ERROR)
-			break ;
 		++i;
-	}
-	if (WEXITSTATUS(status) == PHILO_ERROR)
-	{
-		i = 0;
-		while (i < common->number_of_philosophers)
-		{
-			kill(philos[i].pid, SIGINT);
-			++i;
-		}
 	}
 	return (exit_status);
 }

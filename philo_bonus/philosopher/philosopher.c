@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 07:19:27 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 07:56:44 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int	philo_do(void *param)
 			break ;
 		usleep(500);
 	}
+	kill(0, SIGINT);
 	return (PHILO_ERROR);
 }
