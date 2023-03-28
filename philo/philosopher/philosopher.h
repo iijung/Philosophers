@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 23:43:20 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 20:15:19 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PHILOSOPHER_H
 # include <stdio.h>
 # include "ft_util.h"
-# include "ft_time.h"
 # include "ft_shared.h"
 
 # define STATUS_FORK	"has taken a fork\n"
@@ -40,8 +39,8 @@ struct s_philosopher
 	pthread_t			tid;
 	long				num;
 	long				ate_count;
-	struct timeval		die_time;
-	struct timeval		log_time;
+	long				die_time;
+	long				log_time;
 	struct
 	{
 		struct s_common	*common;
@@ -49,5 +48,6 @@ struct s_philosopher
 	};
 };
 
+long	get_elapsed_ms(struct timeval base);
 void	*philo_do(void *param);
 #endif

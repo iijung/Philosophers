@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 23:56:45 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 20:15:27 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ static int	_speak(struct s_philosopher *philo, const char *status)
 	ret = EXIT_SUCCESS;
 	pthread_mutex_lock(&common->lock);
 	{
-		gettimeofday(&philo->log_time, NULL);
-		if (compare_timeval(philo->die_time, philo->log_time) == TIME_PASSED)
+		philo->log_time = get_elapsed_ms(common->start_time);
+		if (philo->die_time <= philo->log_time)
 		{
 			ret = EXIT_FAILURE;
 			status = STATUS_DIED;
 			set_shared(&common->completed, common->number_of_philosophers);
 		}
-		printf("%-20ld %20ld %s",
-			get_elapsed_ms(common->start_time, philo->log_time),
-			philo->num, status);
+		printf("%-20ld %20ld %s", philo->log_time, philo->num, status);
 	}
 	pthread_mutex_unlock(&common->lock);
 	return (ret);
@@ -39,21 +37,23 @@ static int	_speak(struct s_philosopher *philo, const char *status)
 
 static int	_wait(struct s_philosopher *philo, long timestamp_in_ms)
 {
-	struct timeval	end_time;
+	const long	end_time = philo->log_time + timestamp_in_ms;
+	long		curr_time;
 
-	end_time = add_timeval_ms(philo->log_time, timestamp_in_ms);
-	while (compare_timenow(philo->die_time) != TIME_PASSED)
+	curr_time = get_elapsed_ms(common->start_time);
+	while (philo->die_time <= curr_time)
 	{
-		if (compare_timenow(end_time) == TIME_PASSED)
+		if (end_time <= curr_time)
 			return (EXIT_SUCCESS);
 		usleep(200);
+		curr_time = get_elapsed_ms(common->start_time);
 	}
 	return (_speak(philo, STATUS_DIED));
 }
 
 static int	_fork(struct s_philosopher *philo, int is_second)
 {
-	struct s_shared	*const	fork = philo->forks[is_second];
+	struct s_shared *const	fork = philo->forks[is_second];
 	const int				same_fork = philo->forks[0] == philo->forks[1];
 	int						success;
 
@@ -86,7 +86,7 @@ static int	_eat(struct s_philosopher *philo)
 		return (EXIT_FAILURE);
 	must_eat = common->number_of_times_each_philosopher_must_eat;
 	philo->ate_count++;
-	philo->die_time = add_timeval_ms(philo->log_time, common->time_to_die);
+	philo->die_time = philo->log_time + common->time_to_die;
 	if (_wait(philo, common->time_to_eat))
 		return (EXIT_FAILURE);
 	if (philo->ate_count == must_eat)
@@ -101,7 +101,7 @@ void	*philo_do(void *param)
 	struct s_philosopher *const	philo = param;
 	struct s_common *const		common = philo->common;
 
-	philo->die_time = add_timeval_ms(common->start_time, common->time_to_die);
+	philo->die_time = common->time_to_die;
 	while (_speak(philo, STATUS_THINK) == EXIT_SUCCESS)
 	{
 		if (_fork(philo, 0) || _speak(philo, STATUS_FORK))
