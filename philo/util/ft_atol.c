@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 01:23:23 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 02:25:39 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 23:12:24 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_isdigit(int c)
 	return ('0' <= c && c <= '9');
 }
 
-extern long	ft_atol(const char *str)
+long	ft_atol(const char *str)
 {
 	long	num;
 	int		is_negative;

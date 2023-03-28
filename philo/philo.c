@@ -6,17 +6,20 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 15:32:27 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 23:16:27 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "simulate.h"
+#include <errno.h>
+
+extern void	ft_putstr_fd(char *s, int fd);
+extern long	ft_atol(const char *str);
 
 int	main(int argc, char *argv[])
 {
-	struct s_common	common;
+	static struct s_common	common;
 
-	memset(&common, 0, sizeof(struct s_common));
 	if (argv && (argc == 5 || argc == 6))
 	{
 		common.number_of_philosophers = ft_atol(argv[1]);

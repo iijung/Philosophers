@@ -6,15 +6,15 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 20:28:55 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 23:17:14 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 # include <stdio.h>			// printf
+# include <unistd.h>		// usleep
 # include <sys/time.h>		// gettimeofday
-# include "ft_util.h"
 # include "fork.h"
 
 # define STATUS_FORK	"has taken a fork\n"
@@ -22,6 +22,13 @@
 # define STATUS_SLEEP	"is sleeping\n"
 # define STATUS_THINK	"is thinking\n"
 # define STATUS_DIED	"died\n"
+
+enum e_status
+{
+	PHILO_INPROGRESS,
+	PHILO_ERROR,
+	PHILO_COMPLETED
+};
 
 struct s_common
 {

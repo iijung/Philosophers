@@ -6,18 +6,19 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 21:51:33 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 23:18:08 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
+#include <limits.h>
 
 static int	_speak(struct s_philosopher *philo, const char *status)
 {
 	struct s_common *const	common = philo->common;
 	int						ret;
 
-	ret = EXIT_FAILURE;
+	ret = PHILO_ERROR;
 	pthread_mutex_lock(&common->lock);
 	{
 		if (common->should_terminate == 0)
@@ -29,7 +30,7 @@ static int	_speak(struct s_philosopher *philo, const char *status)
 				common->should_terminate = 1;
 			}
 			else
-				ret = EXIT_SUCCESS;
+				ret = PHILO_INPROGRESS;
 			printf("%-20ld %20ld %s", philo->log_time, philo->num, status);
 		}
 	}
@@ -47,7 +48,7 @@ static int	_wait(struct s_philosopher *philo, long timestamp_in_ms)
 	while (curr_time < philo->die_time)
 	{
 		if (end_time <= curr_time)
-			return (EXIT_SUCCESS);
+			return (PHILO_INPROGRESS);
 		usleep(500);
 		curr_time = get_elapsed_ms(common->start_time);
 	}
@@ -63,7 +64,7 @@ static int	_fork(struct s_philosopher *philo, t_fork *fork)
 	while (curr_time < philo->die_time)
 	{
 		if (get_fork(fork) == 0)
-			return (EXIT_SUCCESS);
+			return (PHILO_INPROGRESS);
 		usleep(500);
 		curr_time = get_elapsed_ms(common->start_time);
 	}
@@ -77,7 +78,7 @@ static int	_eat(struct s_philosopher *philo)
 	int							ret;
 
 	must_eat = common->number_of_times_each_philosopher_must_eat;
-	ret = EXIT_FAILURE;
+	ret = PHILO_ERROR;
 	if (!_speak(philo, STATUS_THINK) && !_fork(philo, philo->forks[0]))
 	{
 		if (philo->forks[0] == philo->forks[1])
@@ -90,7 +91,7 @@ static int	_eat(struct s_philosopher *philo)
 				ret = _wait(philo, common->time_to_eat);
 				philo->ate_count++;
 				if (must_eat != -1 && philo->ate_count >= must_eat)
-					ret = EXIT_FAILURE;
+					ret = PHILO_COMPLETED;
 			}
 			put_fork(philo->forks[1]);
 		}

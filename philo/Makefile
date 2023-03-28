@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/28 19:11:04 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/28 23:21:23 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,7 @@
 
 CFLAGS		+= -Wall -Wextra -Werror -MMD -MP -O2
 CFLAGS		+= -pedantic
-CPPFLAGS	+= \
-	-I ./util \
-	-I ./time \
-	-I ./simulate \
-	-I ./philosopher \
+CPPFLAGS	+= -I ./philosopher
 
 LDFLAGS		+= -pthread
 
@@ -34,12 +30,11 @@ PHILO	= philo
 
 PHILO_SRCS = \
 	util/ft_atol.c \
-	util/ft_calloc.c \
 	util/ft_putstr_fd.c \
-	time/ft_time.c \
-	simulate/simulate.c \
+	util/ft_time.c \
 	philosopher/fork.c \
 	philosopher/philosopher.c \
+	philosopher/simulate.c \
 	philo.c \
 
 PHILO_OBJS = $(PHILO_SRCS:.c=.o)
