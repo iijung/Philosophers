@@ -6,109 +6,11 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/27 23:26:19 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 15:32:27 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
-
-static void	_finally(
-	struct s_common *common,
-	struct s_shared *forks)
-{
-	long	i;
-
-	pthread_mutex_destroy(&common->lock);
-	pthread_mutex_destroy(&common->completed.lock);
-	i = 0;
-	while (i < common->number_of_philosophers)
-		pthread_mutex_destroy(&forks[i++].lock);
-}
-
-static int	_initial(
-	struct s_common *common,
-	struct s_shared *forks,
-	struct s_philosopher *philos)
-{
-	long					i;
-	long					num_of_philos;
-	struct s_philosopher	*philo;
-
-	if (pthread_mutex_init(&common->lock, NULL) == -1)
-		return (EXIT_FAILURE);
-	if (pthread_mutex_init(&common->completed.lock, NULL) == -1)
-		return (EXIT_FAILURE);
-	num_of_philos = common->number_of_philosophers;
-	i = 0;
-	while (i < num_of_philos)
-	{
-		if (pthread_mutex_init(&forks[i++].lock, NULL) == -1)
-			return (EXIT_FAILURE);
-	}
-	i = 0;
-	while (i < num_of_philos)
-	{
-		philo = &philos[i];
-		philo->common = common;
-		philo->forks[i % 2] = &forks[i];
-		philo->forks[!(i % 2)] = &forks[(i + 1) % num_of_philos];
-		philo->num = ++i;
-	}
-	return (EXIT_SUCCESS);
-}
-
-static int	_execute(
-	struct s_common *common,
-	struct s_philosopher *philos)
-{
-	long	i;
-	int		ret;
-
-	i = 0;
-	ret = EXIT_SUCCESS;
-	gettimeofday(&common->start_time, NULL);
-	while (i < common->number_of_philosophers && ret == EXIT_SUCCESS)
-	{
-		ret = pthread_create(&philos[i].tid, NULL, philo_do, &philos[i]);
-		i += 2;
-	}
-	usleep(500);
-	i = 1;
-	while (i < common->number_of_philosophers && ret == EXIT_SUCCESS)
-	{
-		ret = pthread_create(&philos[i].tid, NULL, philo_do, &philos[i]);
-		i += 2;
-	}
-	i = -1;
-	while (++i < common->number_of_philosophers)
-	{
-		if (philos[i].tid)
-			pthread_join(philos[i].tid, NULL);
-	}
-	return (ret);
-}
-
-static int	simulate(struct s_common *common)
-{
-	int						ret;
-	const long				num_of_philos = common->number_of_philosophers;
-	struct s_philosopher	*philos;
-	struct s_shared			*forks;
-
-	ret = EXIT_FAILURE;
-	forks = ft_calloc(num_of_philos, sizeof(struct s_shared));
-	philos = ft_calloc(num_of_philos, sizeof(struct s_philosopher));
-	if (forks && philos)
-	{
-		ret = _initial(common, forks, philos);
-		if (ret == EXIT_SUCCESS)
-			ret = _execute(common, philos);
-		_finally(common, forks);
-	}
-	free(forks);
-	free(philos);
-	return (ret);
-}
+#include "simulate.h"
 
 int	main(int argc, char *argv[])
 {

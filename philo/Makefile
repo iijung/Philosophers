@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/27 06:12:12 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/28 18:17:34 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ CPPFLAGS	+= \
 	-I ./util \
 	-I ./time \
 	-I ./shared \
+	-I ./simulate \
 	-I ./philosopher \
 
 LDFLAGS		+= -pthread
@@ -38,6 +39,7 @@ PHILO_SRCS = \
 	util/ft_putstr_fd.c \
 	time/ft_time.c \
 	shared/ft_shared.c \
+	simulate/simulate.c \
 	philosopher/philosopher.c \
 	philo.c \
 
