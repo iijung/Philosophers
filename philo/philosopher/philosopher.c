@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 23:18:08 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 06:38:44 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,26 +74,25 @@ static int	_fork(struct s_philosopher *philo, t_fork *fork)
 static int	_eat(struct s_philosopher *philo)
 {
 	struct s_common *const		common = philo->common;
-	long						must_eat;
 	int							ret;
 
-	must_eat = common->number_of_times_each_philosopher_must_eat;
 	ret = PHILO_ERROR;
 	if (!_speak(philo, STATUS_THINK) && !_fork(philo, philo->forks[0]))
 	{
-		if (philo->forks[0] == philo->forks[1])
-			ret = _wait(philo, LONG_MAX);
-		else if (!_speak(philo, STATUS_FORK) && !_fork(philo, philo->forks[1]))
+		if (!_speak(philo, STATUS_FORK))
 		{
-			if (!_speak(philo, STATUS_EAT))
+			if (philo->forks[0] == philo->forks[1])
+				ret = _wait(philo, LONG_MAX);
+			else if (!_fork(philo, philo->forks[1]))
 			{
-				philo->die_time = philo->log_time + common->time_to_die;
-				ret = _wait(philo, common->time_to_eat);
-				philo->ate_count++;
-				if (must_eat != -1 && philo->ate_count >= must_eat)
-					ret = PHILO_COMPLETED;
+				if (!_speak(philo, STATUS_EAT))
+				{
+					philo->die_time = philo->log_time + common->time_to_die;
+					ret = _wait(philo, common->time_to_eat);
+					philo->ate_count++;
+				}
+				put_fork(philo->forks[1]);
 			}
-			put_fork(philo->forks[1]);
 		}
 		put_fork(philo->forks[0]);
 	}
@@ -104,11 +103,15 @@ void	*philo_do(void *param)
 {
 	struct s_philosopher *const	philo = param;
 	struct s_common *const		common = philo->common;
+	long						must_eat;
 
+	must_eat = common->number_of_times_each_philosopher_must_eat;
 	philo->die_time = common->time_to_die;
 	while (1)
 	{
 		if (_eat(philo))
+			break ;
+		if (must_eat != -1 && philo->ate_count >= must_eat)
 			break ;
 		if (_speak(philo, STATUS_SLEEP) || _wait(philo, common->time_to_sleep))
 			break ;

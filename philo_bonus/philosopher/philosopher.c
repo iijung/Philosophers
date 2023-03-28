@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 00:11:22 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 06:44:02 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,23 @@ static int	_wait(struct s_philosopher *philo, long timestamp_in_ms)
 static int	_eat(struct s_philosopher *philo)
 {
 	struct s_common *const		common = philo->common;
-	long						must_eat;
 	int							ret;
 
-	must_eat = common->number_of_times_each_philosopher_must_eat;
 	ret = PHILO_ERROR;
 	if (!_speak(philo, STATUS_THINK) && !get_fork(philo->forks))
 	{
-		if (!_speak(philo, STATUS_FORK) && !get_fork(philo->forks))
+		if (!_speak(philo, STATUS_FORK))
 		{
-			if (!_speak(philo, STATUS_EAT))
+			if (!get_fork(philo->forks))
 			{
-				philo->die_time = philo->log_time + common->time_to_die;
-				ret = _wait(philo, common->time_to_eat);
-				philo->ate_count++;
-				if (must_eat != -1 && philo->ate_count >= must_eat)
-					ret = PHILO_COMPLETED;
+				if (!_speak(philo, STATUS_EAT))
+				{
+					philo->die_time = philo->log_time + common->time_to_die;
+					ret = _wait(philo, common->time_to_eat);
+					philo->ate_count++;
+				}
+				put_fork(philo->forks);
 			}
-			put_fork(philo->forks);
 		}
 		put_fork(philo->forks);
 	}
@@ -88,11 +87,11 @@ int	philo_do(void *param)
 	{
 		if (_eat(philo))
 			break ;
+		if (must_eat != -1 && philo->ate_count >= must_eat)
+			return (PHILO_COMPLETED);
 		if (_speak(philo, STATUS_SLEEP) || _wait(philo, common->time_to_sleep))
 			break ;
 		usleep(500);
 	}
-	if (must_eat != -1 && philo->ate_count >= must_eat)
-		return (PHILO_COMPLETED);
 	return (PHILO_ERROR);
 }
