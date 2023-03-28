@@ -6,15 +6,16 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 20:15:19 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 20:28:55 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
-# include <stdio.h>
+# include <stdio.h>			// printf
+# include <sys/time.h>		// gettimeofday
 # include "ft_util.h"
-# include "ft_shared.h"
+# include "fork.h"
 
 # define STATUS_FORK	"has taken a fork\n"
 # define STATUS_EAT		"is eating\n"
@@ -30,8 +31,11 @@ struct s_common
 	long				time_to_sleep;
 	long				number_of_times_each_philosopher_must_eat;
 	struct timeval		start_time;
-	pthread_mutex_t		lock;
-	struct s_shared		completed;
+	struct
+	{
+		pthread_mutex_t	lock;
+		int				should_terminate;
+	};
 };
 
 struct s_philosopher
@@ -44,7 +48,7 @@ struct s_philosopher
 	struct
 	{
 		struct s_common	*common;
-		struct s_shared	*forks[2];
+		t_fork			*forks[2];
 	};
 };
 

@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 19:11:55 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 21:21:37 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ static int	_initial(struct s_simulator *simulator)
 	{
 		if (create_fork(&forks[i - 1]) == -1)
 			return (EXIT_FAILURE);
+		pthread_mutex_lock(&forks[i - 1].lock);
+		pthread_mutex_unlock(&forks[i - 1].lock);
 		philos[i - 1].num = i;
 		philos[i - 1].common = common;
-		philos[i - 1].forks[0] = &forks[i];
-		philos[i % common->number_of_philosophers].forks[1] = &forks[i];
+		philos[i - 1].forks[0] = &forks[i - 1];
+		philos[i % common->number_of_philosophers].forks[1] = &forks[i - 1];
 		++i;
 	}
 	return (EXIT_SUCCESS);
