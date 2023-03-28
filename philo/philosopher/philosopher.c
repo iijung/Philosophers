@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 21:26:59 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 21:51:33 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	_wait(struct s_philosopher *philo, long timestamp_in_ms)
 	{
 		if (end_time <= curr_time)
 			return (EXIT_SUCCESS);
-		usleep(200);
+		usleep(500);
 		curr_time = get_elapsed_ms(common->start_time);
 	}
 	return (_speak(philo, STATUS_DIED));
@@ -64,7 +64,8 @@ static int	_fork(struct s_philosopher *philo, t_fork *fork)
 	{
 		if (get_fork(fork) == 0)
 			return (EXIT_SUCCESS);
-		usleep(200);
+		usleep(500);
+		curr_time = get_elapsed_ms(common->start_time);
 	}
 	return (_speak(philo, STATUS_DIED));
 }

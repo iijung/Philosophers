@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 21:21:37 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 21:31:18 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	_start(struct s_simulator *simulator)
 		ret = pthread_create(&philos[i].tid, NULL, philo_do, &philos[i]);
 		i += 2;
 	}
-	usleep(500);
+	usleep(1000);
 	i = 1;
 	while (i < common->number_of_philosophers && ret == EXIT_SUCCESS)
 	{
