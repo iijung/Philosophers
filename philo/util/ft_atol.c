@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 01:23:23 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/30 03:23:06 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 05:06:02 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ long	ft_atol(const char *str)
 	is_negative = 0;
 	if (*str == '+' || *str == '-')
 		is_negative = (*str++ == '-');
-	if (ft_isdigit(*str))
+	if (ft_isdigit(*str) == 0)
 		errno = EINVAL;
 	while (ft_isdigit(*str))
 	{
