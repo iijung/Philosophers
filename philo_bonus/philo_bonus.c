@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 15:57:19 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 06:16:18 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int	main(int argc, char *argv[])
 		common.number_of_times_each_philosopher_must_eat = -1;
 		if (argc == 6)
 			common.number_of_times_each_philosopher_must_eat = ft_atol(argv[5]);
-		if (errno == 0 && common.number_of_philosophers <= UINT_MAX)
+		if (errno == 0
+			&& common.time_to_die >= 0
+			&& common.time_to_eat >= 0
+			&& common.time_to_sleep >= 0
+			&& common.number_of_philosophers <= UINT_MAX)
 			return (simulate(&common));
 	}
 	ft_putstr_fd("Usage: ", STDERR_FILENO);
