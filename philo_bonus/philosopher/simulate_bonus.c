@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 16:08:19 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 19:08:30 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,31 @@ static void	_finally(struct s_simulator *simulator)
 {
 	struct s_common *const		common = simulator->common;
 
-	sem_close(common->lock);
-	sem_unlink("common");
+	destroy_share(SHARE_COMMON, common->lock);
+	destroy_share(SHARE_COUNTER, common->counter);
+	destroy_share(SHARE_FORK, simulator->forks);
 }
 
 static int	_initial(struct s_simulator *simulator)
 {
 	struct s_common *const		common = simulator->common;
 	struct s_philosopher *const	philos = simulator->philos;
-	t_fork *const				forks = simulator->forks;
+	const long					num = common->number_of_philosophers;
 	long						i;
 
-	sem_unlink("common");
-	common->lock = sem_open("common", O_CREAT | O_EXCL, 0644, 1);
-	if (common->lock == SEM_FAILED)
+	common->lock = create_share(SHARE_COMMON, 1);
+	common->counter = create_share(SHARE_COUNTER, num);
+	simulator->forks = create_share(SHARE_FORK, num);
+	if (common->lock == SEM_FAILED
+		|| common->counter == SEM_FAILED
+		|| simulator->forks == SEM_FAILED)
 		return (PHILO_ERROR);
 	i = 1;
 	while (i <= common->number_of_philosophers)
 	{
 		philos[i - 1].num = i;
 		philos[i - 1].common = common;
-		philos[i - 1].forks = forks;
+		philos[i - 1].forks = simulator->forks;
 		++i;
 	}
 	return (PHILO_INPROGRESS);
@@ -55,7 +59,8 @@ static int	_start(struct s_simulator *simulator)
 	gettimeofday(&common->start_time, NULL);
 	while (i < common->number_of_philosophers)
 	{
-		if (fork() == 0)
+		philos[i].pid = fork();
+		if (philos[i].pid == 0)
 			exit(philo_do(&philos[i]));
 		i += 2;
 	}
@@ -63,7 +68,8 @@ static int	_start(struct s_simulator *simulator)
 	i = 1;
 	while (i < common->number_of_philosophers)
 	{
-		if (fork() == 0)
+		philos[i].pid = fork();
+		if (philos[i].pid == 0)
 			exit(philo_do(&philos[i]));
 		i += 2;
 	}
@@ -73,13 +79,21 @@ static int	_start(struct s_simulator *simulator)
 static int	_stop(struct s_simulator *simulator, int exit_status)
 {
 	struct s_common *const		common = simulator->common;
+	struct s_philosopher *const	philos = simulator->philos;
 	long						i;
-	int							status;
 
+	usleep(1000);
 	i = 0;
 	while (i < common->number_of_philosophers)
 	{
-		waitpid(-1, &status, 0);
+		get_share(common->counter);
+		++i;
+	}
+	i = 0;
+	while (i < common->number_of_philosophers)
+	{
+		if (waitpid(philos[i].pid, NULL, WNOHANG) == 0)
+			kill(philos[i].pid, SIGINT);
 		++i;
 	}
 	return (exit_status);
@@ -97,15 +111,10 @@ int	simulate(struct s_common *common)
 	if (simulator.philos)
 	{
 		memset(simulator.philos, 0, sizeof(struct s_philosopher) * num);
-		simulator.forks = create_fork(num);
-		if (simulator.forks != SEM_FAILED)
-		{
-			ret = _initial(&simulator);
-			if (ret == PHILO_INPROGRESS)
-				ret = _stop(&simulator, _start(&simulator));
-			_finally(&simulator);
-		}
-		destroy_fork(simulator.forks);
+		ret = _initial(&simulator);
+		if (ret == PHILO_INPROGRESS)
+			ret = _stop(&simulator, _start(&simulator));
+		_finally(&simulator);
 	}
 	free(simulator.philos);
 	return (ret);

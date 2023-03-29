@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 17:47:56 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 19:10:27 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ static int	_speak(struct s_philosopher *philo, const char *status)
 		printf("%-20ld %20ld %s", philo->log_time, philo->num, status);
 	}
 	sem_post(common->lock);
+	if (common->number_of_times_each_philosopher_must_eat == philo->ate_count
+		&& common->number_of_times_each_philosopher_must_eat != -1)
+		put_share(common->counter);
 	return (ret);
 }
 
@@ -58,13 +61,13 @@ static int	_eat(struct s_philosopher *philo)
 	int							ret;
 
 	ret = PHILO_ERROR;
-	if (!_speak(philo, STATUS_THINK) && !get_fork(philo->forks))
+	if (!_speak(philo, STATUS_THINK) && !get_share(philo->forks))
 	{
 		if (!_speak(philo, STATUS_FORK))
 		{
 			if (common->number_of_philosophers == 1)
 				ret = _wait(philo, LONG_MAX);
-			else if (!get_fork(philo->forks))
+			else if (!get_share(philo->forks))
 			{
 				if (!_speak(philo, STATUS_EAT))
 				{
@@ -72,10 +75,10 @@ static int	_eat(struct s_philosopher *philo)
 					ret = _wait(philo, common->time_to_eat);
 					philo->ate_count++;
 				}
-				put_fork(philo->forks);
+				put_share(philo->forks);
 			}
 		}
-		put_fork(philo->forks);
+		put_share(philo->forks);
 	}
 	return (ret);
 }
@@ -84,16 +87,13 @@ int	philo_do(void *param)
 {
 	struct s_philosopher *const	philo = param;
 	struct s_common *const		common = philo->common;
-	long						must_eat;
 
-	must_eat = common->number_of_times_each_philosopher_must_eat;
+	get_share(common->counter);
 	philo->die_time = common->time_to_die;
 	while (1)
 	{
 		if (_eat(philo))
 			break ;
-		if (must_eat != -1 && philo->ate_count >= must_eat)
-			return (PHILO_COMPLETED);
 		if (_speak(philo, STATUS_SLEEP) || _wait(philo, common->time_to_sleep))
 			break ;
 	}

@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_bonus.c                                       :+:      :+:    :+:   */
+/*   share_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:34:24 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 15:57:58 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 18:30:32 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fork_bonus.h"
+#include "share_bonus.h"
 
-t_fork	*create_fork(long num_of_fork)
+t_share	*create_share(const char *name, unsigned int num)
 {
-	sem_unlink("fork");
-	return (sem_open("fork", O_CREAT | O_EXCL, 0644, num_of_fork));
+	sem_unlink(name);
+	return (sem_open(name, O_CREAT | O_EXCL, 0644, num));
 }
 
-void	destroy_fork(t_fork *fork)
+void	destroy_share(const char *name, t_share *share)
 {
-	sem_close(fork);
-	sem_unlink("fork");
+	sem_close(share);
+	sem_unlink(name);
 }
 
-int	get_fork(t_fork *fork)
+int	get_share(t_share *share)
 {
-	return (sem_wait(fork));
+	return (sem_wait(share));
 }
 
-void	put_fork(t_fork *fork)
+void	put_share(t_share *share)
 {
-	sem_post(fork);
+	sem_post(share);
 }

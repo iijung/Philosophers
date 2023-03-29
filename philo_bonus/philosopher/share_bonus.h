@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_bonus.h                                       :+:      :+:    :+:   */
+/*   share_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:39:46 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 18:05:19 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 18:33:35 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FORK_BONUS_H
-# define FORK_BONUS_H
+#ifndef SHARE_BONUS_H
+# define SHARE_BONUS_H
 # include <fcntl.h>
 # include <semaphore.h>
 
-typedef sem_t	t_fork;
+# define SHARE_COMMON	"common"
+# define SHARE_COUNTER	"counter"
+# define SHARE_FORK		"fork"
 
-t_fork		*create_fork(long num_of_fork);
-extern void	destroy_fork(t_fork *fork);
-extern int	get_fork(t_fork *fork);
-extern void	put_fork(t_fork *fork);
+typedef sem_t	t_share;
+
+t_share		*create_share(const char *name, unsigned int num);
+extern void	destroy_share(const char *name, t_share *share);
+extern int	get_share(t_share *share);
+extern void	put_share(t_share *share);
 
 #endif
