@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   fork.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 05:01:33 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/10 03:29:21 by minjungk         ###   ########.fr       */
+/*   Created: 2023/03/28 17:39:46 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/28 20:43:56 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
-#include <sys/time.h>
+#ifndef FORK_H
+# define FORK_H
+# include <pthread.h>
 
-extern int	timediff(struct timeval *base, struct timeval *curr)
+typedef struct s_fork	t_fork;
+
+enum e_use
 {
-	struct timeval	now;
-	int				timestamp_in_ms;
+	USE_NO = 0,
+	USE_YES = 1
+};
 
-	if (base == NULL)
-		return (0);
-	gettimeofday(&now, NULL);
-	if (curr == NULL)
-		curr = &now;
-	timestamp_in_ms = curr->tv_sec * 1000 - base->tv_sec * 1000;
-	timestamp_in_ms += curr->tv_usec / 1000 - base->tv_usec / 1000;
-	return (timestamp_in_ms);
-}
+struct s_fork
+{
+	pthread_mutex_t	lock;
+	enum e_use		is_used;
+};
+
+extern int	create_fork(t_fork *fork);
+extern void	destroy_fork(t_fork *fork);
+extern int	get_fork(t_fork *fork);
+extern void	put_fork(t_fork *fork);
+
+#endif

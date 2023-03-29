@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.h                                             :+:      :+:    :+:   */
+/*   share_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/06 11:48:10 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/09 17:24:16 by minjungk         ###   ########.fr       */
+/*   Created: 2023/03/28 17:39:46 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/29 18:33:35 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef SHARE_BONUS_H
+# define SHARE_BONUS_H
+# include <fcntl.h>
+# include <semaphore.h>
 
-extern int	timediff(struct timeval *base, struct timeval *curr);
-extern void	*ft_calloc(size_t count, size_t size);
-extern void	*ft_memcpy(void *dst, const void *src, size_t n);
+# define SHARE_COMMON	"common"
+# define SHARE_COUNTER	"counter"
+# define SHARE_FORK		"fork"
+
+typedef sem_t	t_share;
+
+t_share		*create_share(const char *name, unsigned int num);
+extern void	destroy_share(const char *name, t_share *share);
+extern int	get_share(t_share *share);
+extern void	put_share(t_share *share);
+
 #endif

@@ -6,104 +6,38 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/11 18:24:37 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:57:19 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "simulate_bonus.h"
+#include <errno.h>
+#include <limits.h>
 
-extern int	philo_do(void *param);
-
-extern int	ft_sem_unlink(const char *prefix, int id)
-{
-	char	name[30];
-	int		i;
-	int		prefix_len;
-
-	prefix_len = 0;
-	while (prefix && prefix[prefix_len] && prefix_len < 10)
-		++prefix_len;
-	memset(name, 0, sizeof(name));
-	ft_memcpy(name, prefix, prefix_len);
-	i = prefix_len;
-	if (id == 0)
-		name[i] = '0';
-	while (id > 0)
-	{
-		name[i++] = "0123456789"[id % 10];
-		id /= 10;
-	}
-	return (sem_unlink(name));
-}
-
-extern sem_t	*ft_sem_open(const char *prefix, int id)
-{
-	char	name[30];
-	int		i;
-	int		prefix_len;
-
-	prefix_len = 0;
-	while (prefix && prefix[prefix_len] && prefix_len < 10)
-		++prefix_len;
-	memset(name, 0, sizeof(name));
-	ft_memcpy(name, prefix, prefix_len);
-	i = prefix_len;
-	if (id == 0)
-		name[i] = '0';
-	while (id > 0)
-	{
-		name[i++] = "0123456789"[id % 10];
-		id /= 10;
-	}
-	return (sem_open(name, O_CREAT | O_EXCL, 0644, 1));
-}
-
-static void	main_process(struct s_simulator *simulator)
-{
-	int	i;
-	int	pid;
-	int	status;
-
-	i = 0;
-	while (i < simulator->common.number_of_philosophers)
-	{
-		pid = waitpid(-1, &status, 0);
-		if (WEXITSTATUS(status) == EXIT_FAILURE)
-		{
-			kill(-pid, SIGINT);
-			break ;
-		}
-		++i;
-	}
-}
-
-static int	simulate(struct s_simulator *simulator)
-{
-	struct s_common *const	common = &simulator->common;
-	int						i;
-
-	sem_wait(common->lock);
-	i = 0;
-	while (i < common->number_of_philosophers)
-	{
-		if (fork() == 0)
-		{
-			common->exit_status = philo_do(&simulator->philos[i]);
-			return (simulator->philos[i].process_num);
-		}
-		++i;
-	}
-	sem_post(common->lock);
-	main_process(simulator);
-	return (0);
-}
+extern void	ft_putstr_fd(char *s, int fd);
+extern long	ft_atol(const char *str);
 
 int	main(int argc, char *argv[])
 {
-	static struct s_simulator	simulator;
+	static struct s_common	common;
 
-	if (initial(&simulator, argc, argv))
-		return (EXIT_FAILURE);
-	finally(&simulator, simulate(&simulator));
-	return (simulator.common.exit_status);
+	if (argv && (argc == 5 || argc == 6))
+	{
+		common.number_of_philosophers = ft_atol(argv[1]);
+		common.time_to_die = ft_atol(argv[2]);
+		common.time_to_eat = ft_atol(argv[3]);
+		common.time_to_sleep = ft_atol(argv[4]);
+		common.number_of_times_each_philosopher_must_eat = -1;
+		if (argc == 6)
+			common.number_of_times_each_philosopher_must_eat = ft_atol(argv[5]);
+		if (errno == 0 && common.number_of_philosophers <= UINT_MAX)
+			return (simulate(&common));
+	}
+	ft_putstr_fd("Usage: ", STDERR_FILENO);
+	ft_putstr_fd(argv[0], STDERR_FILENO);
+	ft_putstr_fd(
+		" number_of_philosophers"
+		" time_to_die time_to_eat time_to_sleep"
+		" [number_of_times_each_philosophers_must_eat]\n", STDERR_FILENO);
+	return (-1);
 }

@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: minjungk <minjungk@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/08 01:18:56 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/08 01:19:13 by minjungk         ###   ########.fr       */
+/*   Created: 2022/07/10 00:29:45 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/26 22:55:33 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include <stdint.h>
+#include <unistd.h>
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	ft_putstr_fd(char *s, int fd)
 {
-	unsigned char		*d;
-	const unsigned char	*s;
+	size_t	len;
 
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	d = dst;
-	s = src;
-	while (n--)
-		*d++ = *s++;
-	return (dst);
+	len = 0;
+	while (s && s[len])
+	{
+		if (++len == SIZE_MAX)
+		{
+			write(fd, s, len);
+			s += len;
+			len = 0;
+		}
+	}
+	write(fd, s, len);
 }

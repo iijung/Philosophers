@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/11 18:09:42 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/28 23:21:23 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,13 @@
 .DEFAULT_GOAL := all
 
 CFLAGS		+= -Wall -Wextra -Werror -MMD -MP -O2
-CPPFLAGS	+= -I ./util
+CFLAGS		+= -pedantic
+CPPFLAGS	+= -I ./philosopher
+
 LDFLAGS		+= -pthread
 
 ifdef DEBUG
-CFLAGS		+= -O0 -g -Weverything -pedantic
+CFLAGS		+= -O0 -g
 endif
 
 # **************************************************************************** #
@@ -27,11 +29,12 @@ endif
 PHILO	= philo
 
 PHILO_SRCS = \
-	util/ft_calloc.c \
-	util/ft_memcpy.c \
-	util/time.c \
-	initial.c \
-	philosopher.c \
+	util/ft_atol.c \
+	util/ft_putstr_fd.c \
+	util/ft_time.c \
+	philosopher/fork.c \
+	philosopher/philosopher.c \
+	philosopher/simulate.c \
 	philo.c \
 
 PHILO_OBJS = $(PHILO_SRCS:.c=.o)

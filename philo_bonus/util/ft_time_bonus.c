@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   ft_time.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 05:01:33 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/10 03:29:21 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/28 20:15:52 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 #include <sys/time.h>
 
-extern int	timediff(struct timeval *base, struct timeval *curr)
+long	get_elapsed_ms(struct timeval base)
 {
-	struct timeval	now;
-	int				timestamp_in_ms;
+	struct timeval	curr;
+	long			elapsed_ms;
 
-	if (base == NULL)
-		return (0);
-	gettimeofday(&now, NULL);
-	if (curr == NULL)
-		curr = &now;
-	timestamp_in_ms = curr->tv_sec * 1000 - base->tv_sec * 1000;
-	timestamp_in_ms += curr->tv_usec / 1000 - base->tv_usec / 1000;
-	return (timestamp_in_ms);
+	gettimeofday(&curr, NULL);
+	elapsed_ms = (curr.tv_sec - base.tv_sec) * 1000;
+	elapsed_ms += (curr.tv_usec - base.tv_usec) / 1000;
+	return (elapsed_ms);
 }

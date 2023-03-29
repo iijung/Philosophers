@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   share_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 07:05:02 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/02 18:16:58 by minjungk         ###   ########.fr       */
+/*   Created: 2023/03/28 17:34:24 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/29 18:30:32 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
+#include "share_bonus.h"
 
-void	*ft_calloc(size_t count, size_t size)
+t_share	*create_share(const char *name, unsigned int num)
 {
-	unsigned char	*rtn;
+	sem_unlink(name);
+	return (sem_open(name, O_CREAT | O_EXCL, 0644, num));
+}
 
-	rtn = malloc(count * size);
-	if (rtn)
-		memset(rtn, 0, count * size);
-	return (rtn);
+void	destroy_share(const char *name, t_share *share)
+{
+	sem_close(share);
+	sem_unlink(name);
+}
+
+int	get_share(t_share *share)
+{
+	return (sem_wait(share));
+}
+
+void	put_share(t_share *share)
+{
+	sem_post(share);
 }

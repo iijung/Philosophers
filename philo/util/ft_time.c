@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_time.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 07:05:02 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/02 18:16:58 by minjungk         ###   ########.fr       */
+/*   Created: 2023/03/02 05:01:33 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/28 20:15:52 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
+#include <stddef.h>
+#include <sys/time.h>
 
-void	*ft_calloc(size_t count, size_t size)
+long	get_elapsed_ms(struct timeval base)
 {
-	unsigned char	*rtn;
+	struct timeval	curr;
+	long			elapsed_ms;
 
-	rtn = malloc(count * size);
-	if (rtn)
-		memset(rtn, 0, count * size);
-	return (rtn);
+	gettimeofday(&curr, NULL);
+	elapsed_ms = (curr.tv_sec - base.tv_sec) * 1000;
+	elapsed_ms += (curr.tv_usec - base.tv_usec) / 1000;
+	return (elapsed_ms);
 }
