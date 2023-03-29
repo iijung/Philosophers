@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 15:58:26 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:47:56 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ static int	_speak(struct s_philosopher *philo, const char *status)
 	{
 		philo->log_time = get_elapsed_ms(common->start_time);
 		if (philo->die_time <= philo->log_time)
-			status = STATUS_DIED;
+		{
+			printf("%-20ld %20ld %s", philo->log_time, philo->num, STATUS_DIED);
+			kill(0, SIGINT);
+		}
 		else
 			ret = PHILO_INPROGRESS;
 		printf("%-20ld %20ld %s", philo->log_time, philo->num, status);
@@ -93,8 +96,6 @@ int	philo_do(void *param)
 			return (PHILO_COMPLETED);
 		if (_speak(philo, STATUS_SLEEP) || _wait(philo, common->time_to_sleep))
 			break ;
-		usleep(500);
 	}
-	kill(0, SIGINT);
 	return (PHILO_ERROR);
 }
