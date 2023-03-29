@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 23:48:12 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:30:50 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	_stop(struct s_simulator *simulator, int exit_status)
 	if (exit_status == PHILO_ERROR)
 	{
 		pthread_mutex_lock(&common->lock);
-		common->should_terminate = 1;
+		common->end_counter = common->number_of_philosophers;
 		pthread_mutex_unlock(&common->lock);
 	}
 	i = 0;

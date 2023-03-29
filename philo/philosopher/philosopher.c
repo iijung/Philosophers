@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 07:19:29 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:22:44 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,25 @@ static int	_speak(struct s_philosopher *philo, const char *status)
 {
 	struct s_common *const	common = philo->common;
 	int						ret;
+	long					must_eat;
 
 	ret = PHILO_ERROR;
+	must_eat = common->number_of_times_each_philosopher_must_eat;
 	pthread_mutex_lock(&common->lock);
 	{
-		if (common->should_terminate == 0)
+		if (common->end_counter < common->number_of_philosophers)
 		{
 			philo->log_time = get_elapsed_ms(common->start_time);
 			if (philo->die_time <= philo->log_time)
 			{
 				status = STATUS_DIED;
-				common->should_terminate = 1;
+				common->end_counter = common->number_of_philosophers;
 			}
 			else
 				ret = PHILO_INPROGRESS;
 			printf("%-20ld %20ld %s", philo->log_time, philo->num, status);
+			if (must_eat != -1 && philo->ate_count == must_eat)
+				common->end_counter++;
 		}
 	}
 	pthread_mutex_unlock(&common->lock);
@@ -103,19 +107,14 @@ void	*philo_do(void *param)
 {
 	struct s_philosopher *const	philo = param;
 	struct s_common *const		common = philo->common;
-	long						must_eat;
 
-	must_eat = common->number_of_times_each_philosopher_must_eat;
 	philo->die_time = common->time_to_die;
 	while (1)
 	{
 		if (_eat(philo))
 			break ;
-		if (must_eat != -1 && philo->ate_count >= must_eat)
-			break ;
 		if (_speak(philo, STATUS_SLEEP) || _wait(philo, common->time_to_sleep))
 			break ;
-		usleep(500);
 	}
 	return (NULL);
 }
