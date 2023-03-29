@@ -6,11 +6,11 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 23:59:00 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:57:19 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "simulate.h"
+#include "simulate_bonus.h"
 #include <errno.h>
 #include <limits.h>
 

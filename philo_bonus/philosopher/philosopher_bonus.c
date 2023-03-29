@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   philosopher_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 07:56:44 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:58:26 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosopher.h"
+#include "philosopher_bonus.h"
 #include <limits.h>
 
 static int	_speak(struct s_philosopher *philo, const char *status)

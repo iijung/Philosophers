@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.h                                      :+:      :+:    :+:   */
+/*   philosopher_bonus.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 09:07:27 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 15:58:49 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#ifndef PHILOSOPHER_BONUS_H
+# define PHILOSOPHER_BONUS_H
 # include <stdio.h>			// printf
 # include <unistd.h>		// usleep
 # include <signal.h>		// kill
 # include <sys/time.h>		// gettimeofday
-# include "fork.h"
+# include "fork_bonus.h"
 
 # define STATUS_FORK	"has taken a fork\n"
 # define STATUS_EAT		"is eating\n"

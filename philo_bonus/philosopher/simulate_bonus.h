@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork.h                                             :+:      :+:    :+:   */
+/*   simulate_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 17:39:46 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 23:59:15 by minjungk         ###   ########.fr       */
+/*   Created: 2023/03/28 15:31:20 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/29 15:59:06 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FORK_H
-# define FORK_H
-# include <fcntl.h>
-# include <semaphore.h>
+#ifndef SIMULATE_BONUS_H
+# define SIMULATE_BONUS_H
+# include "philosopher_bonus.h"
 
-typedef sem_t	t_fork;
+struct s_simulator
+{
+	struct s_common			*common;
+	struct s_philosopher	*philos;
+	t_fork					*forks;
+};
 
-t_fork		*create_fork(long num_of_fork);
-extern void	destroy_fork(t_fork *fork);
-extern int	get_fork(t_fork *fork);
-extern void	put_fork(t_fork *fork);
-
+extern int	simulate(struct s_common *common);
 #endif

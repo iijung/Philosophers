@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulate.c                                         :+:      :+:    :+:   */
+/*   simulate_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 09:07:50 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:08:19 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "simulate.h"
+#include "simulate_bonus.h"
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>

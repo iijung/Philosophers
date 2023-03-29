@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulate.h                                         :+:      :+:    :+:   */
+/*   fork_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 15:31:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 07:55:45 by minjungk         ###   ########.fr       */
+/*   Created: 2023/03/28 17:34:24 by minjungk          #+#    #+#             */
+/*   Updated: 2023/03/29 15:57:58 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIMULATE_H
-# define SIMULATE_H
-# include "philosopher.h"
+#include "fork_bonus.h"
 
-struct s_simulator
+t_fork	*create_fork(long num_of_fork)
 {
-	struct s_common			*common;
-	struct s_philosopher	*philos;
-	t_fork					*forks;
-};
+	sem_unlink("fork");
+	return (sem_open("fork", O_CREAT | O_EXCL, 0644, num_of_fork));
+}
 
-extern int	simulate(struct s_common *common);
-#endif
+void	destroy_fork(t_fork *fork)
+{
+	sem_close(fork);
+	sem_unlink("fork");
+}
+
+int	get_fork(t_fork *fork)
+{
+	return (sem_wait(fork));
+}
+
+void	put_fork(t_fork *fork)
+{
+	sem_post(fork);
+}
