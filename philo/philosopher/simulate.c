@@ -6,13 +6,11 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/30 04:37:22 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 04:39:15 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "simulate.h"
-#include <stdlib.h>
-#include <string.h>
 
 static void	_finally(struct s_simulator *simulator)
 {
@@ -100,12 +98,10 @@ int	simulate(struct s_common *common)
 
 	ret = PHILO_ERROR;
 	simulator.common = common;
-	simulator.forks = malloc(sizeof(t_share) * num);
-	simulator.philos = malloc(sizeof(struct s_philosopher) * num);
+	simulator.forks = ft_calloc(num, sizeof(t_share));
+	simulator.philos = ft_calloc(num, sizeof(struct s_philosopher));
 	if (simulator.forks && simulator.philos)
 	{
-		memset(simulator.forks, 0, sizeof(t_share) * num);
-		memset(simulator.philos, 0, sizeof(struct s_philosopher) * num);
 		ret = _initial(&simulator);
 		if (ret == PHILO_INPROGRESS)
 			ret = _stop(&simulator, _start(&simulator));
