@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:30:19 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 17:30:50 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 04:37:22 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@
 static void	_finally(struct s_simulator *simulator)
 {
 	struct s_common *const		common = simulator->common;
-	t_fork *const				forks = simulator->forks;
+	t_share *const				forks = simulator->forks;
 	long						i;
 
 	pthread_mutex_destroy(&common->lock);
 	i = 0;
 	while (i < common->number_of_philosophers)
-		destroy_fork(&forks[i++]);
+		destroy_share(&forks[i++]);
 }
 
 static int	_initial(struct s_simulator *simulator)
 {
 	struct s_common *const		common = simulator->common;
 	struct s_philosopher *const	philos = simulator->philos;
-	t_fork *const				forks = simulator->forks;
+	t_share *const				forks = simulator->forks;
 	long						i;
 
 	if (pthread_mutex_init(&common->lock, NULL) == -1)
@@ -38,7 +38,7 @@ static int	_initial(struct s_simulator *simulator)
 	i = 1;
 	while (i <= common->number_of_philosophers)
 	{
-		if (create_fork(&forks[i - 1]) == -1)
+		if (create_share(&forks[i - 1]) == -1)
 			return (PHILO_ERROR);
 		philos[i - 1].num = i;
 		philos[i - 1].common = common;
@@ -100,11 +100,11 @@ int	simulate(struct s_common *common)
 
 	ret = PHILO_ERROR;
 	simulator.common = common;
-	simulator.forks = malloc(sizeof(t_fork) * num);
+	simulator.forks = malloc(sizeof(t_share) * num);
 	simulator.philos = malloc(sizeof(struct s_philosopher) * num);
 	if (simulator.forks && simulator.philos)
 	{
-		memset(simulator.forks, 0, sizeof(t_fork) * num);
+		memset(simulator.forks, 0, sizeof(t_share) * num);
 		memset(simulator.philos, 0, sizeof(struct s_philosopher) * num);
 		ret = _initial(&simulator);
 		if (ret == PHILO_INPROGRESS)

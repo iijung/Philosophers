@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 20:33:20 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 17:22:44 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 04:35:49 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	_wait(struct s_philosopher *philo, long timestamp_in_ms)
 	return (_speak(philo, STATUS_DIED));
 }
 
-static int	_fork(struct s_philosopher *philo, t_fork *fork)
+static int	_fork(struct s_philosopher *philo, t_share *fork)
 {
 	struct s_common *const	common = philo->common;
 	long					curr_time;
@@ -67,7 +67,7 @@ static int	_fork(struct s_philosopher *philo, t_fork *fork)
 	curr_time = get_elapsed_ms(common->start_time);
 	while (curr_time < philo->die_time)
 	{
-		if (get_fork(fork) == 0)
+		if (get_share(fork) == 0)
 			return (PHILO_INPROGRESS);
 		usleep(500);
 		curr_time = get_elapsed_ms(common->start_time);
@@ -95,10 +95,10 @@ static int	_eat(struct s_philosopher *philo)
 					ret = _wait(philo, common->time_to_eat);
 					philo->ate_count++;
 				}
-				put_fork(philo->forks[1]);
+				put_share(philo->forks[1]);
 			}
 		}
-		put_fork(philo->forks[0]);
+		put_share(philo->forks[0]);
 	}
 	return (ret);
 }

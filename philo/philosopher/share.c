@@ -1,45 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork.c                                             :+:      :+:    :+:   */
+/*   share.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:34:24 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 21:07:03 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 04:35:23 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fork.h"
+#include "share.h"
 
-int	create_fork(t_fork *fork)
+int	create_share(t_share *share)
 {
-	return (pthread_mutex_init(&fork->lock, NULL));
+	return (pthread_mutex_init(&share->lock, NULL));
 }
 
-void	destroy_fork(t_fork *fork)
+void	destroy_share(t_share *share)
 {
-	pthread_mutex_destroy(&fork->lock);
+	pthread_mutex_destroy(&share->lock);
 }
 
-int	get_fork(t_fork *fork)
+int	get_share(t_share *share)
 {
 	int	err;
 
 	err = -1;
-	pthread_mutex_lock(&fork->lock);
-	if (fork->is_used == USE_NO)
+	pthread_mutex_lock(&share->lock);
+	if (share->is_locked == UNLOCKED)
 	{
 		err = 0;
-		fork->is_used = USE_YES;
+		share->is_locked = LOCKED;
 	}
-	pthread_mutex_unlock(&fork->lock);
+	pthread_mutex_unlock(&share->lock);
 	return (err);
 }
 
-void	put_fork(t_fork *fork)
+void	put_share(t_share *share)
 {
-	pthread_mutex_lock(&fork->lock);
-	fork->is_used = USE_NO;
-	pthread_mutex_unlock(&fork->lock);
+	pthread_mutex_lock(&share->lock);
+	share->is_locked = UNLOCKED;
+	pthread_mutex_unlock(&share->lock);
 }

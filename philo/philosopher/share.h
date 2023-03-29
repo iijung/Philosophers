@@ -1,36 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork.h                                             :+:      :+:    :+:   */
+/*   share.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 17:39:46 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/28 20:43:56 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 04:34:41 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FORK_H
-# define FORK_H
+#ifndef SHARE_H
+# define SHARE_H
 # include <pthread.h>
 
-typedef struct s_fork	t_fork;
+typedef struct s_share	t_share;
 
-enum e_use
+enum e_lock
 {
-	USE_NO = 0,
-	USE_YES = 1
+	UNLOCKED = 0,
+	LOCKED = 1
 };
 
-struct s_fork
+struct s_share
 {
 	pthread_mutex_t	lock;
-	enum e_use		is_used;
+	enum e_lock		is_locked;
 };
 
-extern int	create_fork(t_fork *fork);
-extern void	destroy_fork(t_fork *fork);
-extern int	get_fork(t_fork *fork);
-extern void	put_fork(t_fork *fork);
+extern int		create_share(t_share *share);
+extern void		destroy_share(t_share *share);
+extern int		get_share(t_share *share);
+extern void		put_share(t_share *share);
 
 #endif

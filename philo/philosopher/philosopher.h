@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/29 17:18:42 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 04:35:01 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <stdio.h>			// printf
 # include <unistd.h>		// usleep
 # include <sys/time.h>		// gettimeofday
-# include "fork.h"
+# include "share.h"
 
 # define STATUS_FORK	"has taken a fork\n"
 # define STATUS_EAT		"is eating\n"
@@ -55,7 +55,7 @@ struct s_philosopher
 	struct
 	{
 		struct s_common	*common;
-		t_fork			*forks[2];
+		t_share			*forks[2];
 	};
 };
 
