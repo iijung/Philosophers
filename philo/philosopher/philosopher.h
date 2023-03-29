@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 03:17:48 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/30 04:35:01 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 05:29:25 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct s_common
 	struct
 	{
 		pthread_mutex_t	lock;
-		long			end_counter;
+		long			should_terminate;
 	};
 };
 
