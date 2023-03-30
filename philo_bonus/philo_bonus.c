@@ -6,7 +6,7 @@
 /*   By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 02:01:16 by minjungk          #+#    #+#             */
-/*   Updated: 2023/03/30 06:16:18 by minjungk         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:26:09 by minjungk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 
 extern void	ft_putstr_fd(char *s, int fd);
 extern long	ft_atol(const char *str);
+
+static int	_usage(char *program_name)
+{
+	ft_putstr_fd("Usage: ", STDERR_FILENO);
+	ft_putstr_fd(program_name, STDERR_FILENO);
+	ft_putstr_fd(
+		" number_of_philosophers"
+		" time_to_die time_to_eat time_to_sleep"
+		" [number_of_times_each_philosophers_must_eat]\n", STDERR_FILENO);
+	return (-1);
+}
 
 int	main(int argc, char *argv[])
 {
@@ -34,14 +45,9 @@ int	main(int argc, char *argv[])
 			&& common.time_to_die >= 0
 			&& common.time_to_eat >= 0
 			&& common.time_to_sleep >= 0
+			&& common.number_of_philosophers > 0
 			&& common.number_of_philosophers <= UINT_MAX)
 			return (simulate(&common));
 	}
-	ft_putstr_fd("Usage: ", STDERR_FILENO);
-	ft_putstr_fd(argv[0], STDERR_FILENO);
-	ft_putstr_fd(
-		" number_of_philosophers"
-		" time_to_die time_to_eat time_to_sleep"
-		" [number_of_times_each_philosophers_must_eat]\n", STDERR_FILENO);
-	return (-1);
+	return (_usage(argv[0]));
 }
