@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/27 10:50:27 by minjungk          #+#    #+#              #
-#    Updated: 2023/03/30 13:42:21 by minjungk         ###   ########.fr        #
+#    Updated: 2023/03/30 15:02:37 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ PHILO	= philo_bonus
 
 PHILO_SRCS = \
 	util/ft_atol_bonus.c \
+	util/ft_calloc_bonus.c \
 	util/ft_putstr_fd_bonus.c \
 	util/ft_time_bonus.c \
 	simulate/share_bonus.c \
